@@ -1,0 +1,30 @@
+
+
+
+
+  <p>
+    <input type="number" #amount>
+ More Money  <button (click)=" deposit(amount.value)">Deposit</button>
+
+</p>
+
+
+<ul>
+  <li *ngFor =" let line of wallet.lines" [style.color]="getColor(line.symbol)">
+
+      {{line.quantity}}=>{{line.symbol}}
+  </li>
+</ul>
+======Buy Other Cryptos
+
+  Symbol : <input  #symbol>
+  Quantity : <input type="number" #quantity>
+<button (click)=" letsBuy( quantity.value, symbol.value)"> Buy
+</button> <br><br><br><br>
+  ======Sell Other Cryptos
+
+  Symbol : <input  #symbolSell>
+  Quantity : <input type="number" #quantitySell>
+  <button (click)=" letsSell( quantitySell.value, symbolSell.value)"> Sell
+  </button>
+
