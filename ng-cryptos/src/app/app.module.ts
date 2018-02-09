@@ -14,6 +14,8 @@ import {HttpClientModule} from "@angular/common/http";
 import {PricingService} from "./pricing.service";
 import { FormComponent } from './demos/form/form.component';
 import {FormsModule} from "@angular/forms";
+import { UserListViewComponent } from './user-list-view/user-list-view.component';
+import {DataService} from "./data-service.service";
 
 
 @NgModule({
@@ -22,12 +24,13 @@ import {FormsModule} from "@angular/forms";
     AttributesComponent,
     WalletViewComponent,
     TemplateComponent,
-    FormComponent
+    FormComponent,
+    UserListViewComponent
   ],
   imports: [
     BrowserModule,HttpClientModule,FormsModule
   ],
-  providers: [BurgerService, SteakService,BunService,PricingService],
+  providers: [DataService,BurgerService, SteakService,BunService,PricingService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
