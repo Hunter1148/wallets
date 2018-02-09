@@ -17,14 +17,12 @@ import java.util.List;
  */
 
 public class UserDao {
-    public DataSource connect() {
- return  new WalletDao().connect();
 
+    JdbcConnector connector = new JdbcConnector();
 
-    }
     public List<User> listUsers() throws SQLException {
         List<User> users = new ArrayList<>();
-        Connection conn = connect().getConnection();
+        Connection conn = this.connector.getConnection();
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM user");
 
@@ -44,24 +42,24 @@ public class UserDao {
 
     }
 
-    public void createUser(String name) throws SQLException {
+    public int createUser(String name) throws SQLException {
         String query = "INSERT INTO user (name) VALUES (?)";
-        System.out.println(query);
+        Connection conn = this.connector.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
-        Connection conn = connect().getConnection();
-        PreparedStatement statements = conn.prepareStatement(query);
-        statements.setString(1, name);
+        stmt.setString(1, name);
 
-        statements.executeUpdate();
+        stmt.executeUpdate();
 
+        ResultSet keys = stmt.getGeneratedKeys();
+        keys.next();
+        int result = keys.getInt(1);
 
-        statements.close();
+        stmt.close();
         conn.close();
 
-
+        return result;
     }
-
-
 
 
 
@@ -72,7 +70,7 @@ public class UserDao {
        //System.out.println(query);
 
 
-       Connection conn = connect().getConnection();
+       Connection conn = this.connector.getConnection();
        PreparedStatement statement = conn.prepareStatement(query);
        statement.setInt(1,userId);
        statement.executeUpdate();
@@ -84,7 +82,7 @@ public class UserDao {
      public List<User> findByName(String extract) throws SQLException {
 String query = "SELECT * FROM user WHERE name LIKE ?";
 
-        Connection conn = connect().getConnection();
+        Connection conn = this.connector.getConnection();
         PreparedStatement stmt = conn.prepareStatement(query);
         stmt.setString(1, extract +"%");
         ResultSet rs = stmt.executeQuery();
@@ -104,7 +102,7 @@ String query = "SELECT * FROM user WHERE name LIKE ?";
         //System.out.println(query);
 
 
-        Connection conn = connect().getConnection();
+        Connection conn = this.connector.getConnection();
         PreparedStatement statement = conn.prepareStatement(query);
         statement.setString(1,exactName);
         statement.executeUpdate();
@@ -117,7 +115,7 @@ String query = "UPDATE user SET name = ? WHERE id = ? ";
         //System.out.println(query);
 
 
-        Connection conn = connect().getConnection();
+        Connection conn = this.connector.getConnection();
         PreparedStatement statement = conn.prepareStatement(query);
 
         statement.setInt(2,userId);
@@ -133,9 +131,9 @@ String query = "UPDATE user SET name = ? WHERE id = ? ";
 
     public static void main(String[] args) throws SQLException {
        UserDao dao = new UserDao();
-        dao.findByName("N");
+        dao.createUser("NN");
        // dao.updateUser(1,"lili");
-         dao.deleteUser(5);
+       //  dao.deleteUser(5);
         //dao.updateWallet(5,"Ayoub");
 
 

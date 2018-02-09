@@ -18,33 +18,12 @@ import java.util.List;
  */
 public class WalletDao {
 
-    public DataSource connect() {
-
-        DataSource dataSource;
-
-        try {
-            Context context = new InitialContext();
-            dataSource = (DataSource) context.lookup("java:/cryptos");
-        } catch (NamingException e) {
-
-            MysqlDataSource mysqlDataSource = new MysqlDataSource();
-            mysqlDataSource.setUser("root");
-            mysqlDataSource.setPassword("");
-            mysqlDataSource.setServerName("localhost");
-            mysqlDataSource.setDatabaseName("cryptos");
-            mysqlDataSource.setPort(3306);
-            dataSource = mysqlDataSource;
-
-        }
-
-
-        return dataSource;
-    }
+    JdbcConnector connector = new JdbcConnector();
 
     public List<Wallet> listWallets() throws SQLException {
 
         List<Wallet> wallets = new ArrayList<>();
-        Connection conn = connect().getConnection();
+        Connection conn = this.connector.getConnection();
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM wallet");
 
@@ -71,7 +50,7 @@ public class WalletDao {
         String query = "INSERT INTO wallet (name,user_id) VALUES (?,?)";
         System.out.println(query);
 
-        Connection conn = connect().getConnection();
+        Connection conn = this.connector.getConnection();
         PreparedStatement statements = conn.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
     statements.setString (1,name);
     statements.setInt(2, userId);
@@ -102,7 +81,7 @@ int id = keys.getInt(1);
         //System.out.println(query);
 
 
-        Connection conn = connect().getConnection();
+        Connection conn = this.connector.getConnection();
         PreparedStatement statement = conn.prepareStatement(query);
         statement.setInt(1,walletId);
         statement.executeUpdate();
@@ -114,7 +93,7 @@ int id = keys.getInt(1);
     public List<Wallet> findByName(String extract) throws SQLException {
         String query = "SELECT * FROM wallet WHERE name LIKE ?";
 
-        Connection conn = connect().getConnection();
+        Connection conn = this.connector.getConnection();
         PreparedStatement stmt = conn.prepareStatement(query);
         stmt.setString(1, extract +"%");
         ResultSet rs = stmt.executeQuery();
@@ -136,7 +115,7 @@ int id = keys.getInt(1);
         //System.out.println(query);
 
 
-        Connection conn = connect().getConnection();
+        Connection conn = this.connector.getConnection();
         PreparedStatement statement = conn.prepareStatement(query);
         statement.setString(1,name);
         statement.executeUpdate();
@@ -155,7 +134,7 @@ int id = keys.getInt(1);
         //System.out.println(query);
 
 
-        Connection conn = connect().getConnection();
+        Connection conn = this.connector.getConnection();
         PreparedStatement statement = conn.prepareStatement(query);
 
         statement.setInt(2,walletId);
@@ -174,7 +153,7 @@ int id = keys.getInt(1);
         String query = "DELETE FROM wallet WHERE user_id=?";
         System.out.println(query);
 
-        Connection conn = connect().getConnection();
+        Connection conn = this.connector.getConnection();
         PreparedStatement stmt = conn.prepareStatement(query);
         stmt.setInt(1, userId);
         stmt.executeUpdate();
