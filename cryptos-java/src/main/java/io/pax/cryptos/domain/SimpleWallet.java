@@ -27,4 +27,13 @@ public class SimpleWallet implements Wallet {
     public String getName() {
         return name;
     }
+
+    @Override
+    public String toString() {
+        return "SimpleWallet{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
+

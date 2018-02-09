@@ -1,8 +1,8 @@
 package io.pax.cryptos.dao;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
-import io.pax.cryptos.domain.SimpleUser;
-import io.pax.cryptos.domain.User;
+import com.sun.javafx.scene.control.skin.VirtualFlow;
+import io.pax.cryptos.domain.*;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -42,6 +42,32 @@ public class UserDao {
 
     }
 
+    public User findUserWithWallets(int userId) throws SQLException {
+
+        Connection connection = connector.getConnection();
+        String query = "SELECT * FROM wallet w RIGHT JOIN user u ON w.user_id=u.id WHERE u.id =?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, userId);
+        ResultSet set = statement.executeQuery();
+        User user = null;
+        List<Wallet> wallets = new ArrayList<>();
+        while (set.next()) {
+            String userName = set.getString("u.name");
+            System.out.println("userName: " + userName);
+            user = new FullUser(userId, userName, wallets);
+            int walletId = set.getInt("w.id");
+            String walletName = set.getString("w.name");
+            if(walletId>0){
+
+
+            Wallet wallet = new SimpleWallet(walletId, walletName);
+            wallets.add(wallet);
+        }}
+        set.close();
+        statement.close();
+        return user;
+    }
+
     public int createUser(String name) throws SQLException {
         String query = "INSERT INTO user (name) VALUES (?)";
         Connection conn = this.connector.getConnection();
@@ -62,29 +88,28 @@ public class UserDao {
     }
 
 
+    public void deleteUser(int userId) throws SQLException {
+        WalletDao walletDao = new WalletDao();
+        walletDao.deleteAll(userId);
+        String query = "DELETE  FROM user WHERE id=?";
+        //System.out.println(query);
 
-   public void deleteUser(int userId) throws SQLException{
-      WalletDao walletDao = new WalletDao();
-       walletDao.deleteAll(userId);
-       String query = "DELETE  FROM user WHERE id=?";
-       //System.out.println(query);
 
-
-       Connection conn = this.connector.getConnection();
-       PreparedStatement statement = conn.prepareStatement(query);
-       statement.setInt(1,userId);
-       statement.executeUpdate();
-       statement.close();
-       conn.close();
+        Connection conn = this.connector.getConnection();
+        PreparedStatement statement = conn.prepareStatement(query);
+        statement.setInt(1, userId);
+        statement.executeUpdate();
+        statement.close();
+        conn.close();
 
     }
 
-     public List<User> findByName(String extract) throws SQLException {
-String query = "SELECT * FROM user WHERE name LIKE ?";
+    public List<User> findByName(String extract) throws SQLException {
+        String query = "SELECT * FROM user WHERE name LIKE ?";
 
         Connection conn = this.connector.getConnection();
         PreparedStatement stmt = conn.prepareStatement(query);
-        stmt.setString(1, extract +"%");
+        stmt.setString(1, extract + "%");
         ResultSet rs = stmt.executeQuery();
 
         List<User> users = new ArrayList<>();
@@ -98,46 +123,42 @@ String query = "SELECT * FROM user WHERE name LIKE ?";
     }
 
     public void deleteByName(String exactName) throws SQLException {
- String query = "DELETE  FROM user WHERE name=?";
+        String query = "DELETE  FROM user WHERE name=?";
         //System.out.println(query);
 
 
         Connection conn = this.connector.getConnection();
         PreparedStatement statement = conn.prepareStatement(query);
-        statement.setString(1,exactName);
+        statement.setString(1, exactName);
         statement.executeUpdate();
         statement.close();
         conn.close();
     }
 
-   public void updateUser(int userId, String newName) throws SQLException {
-String query = "UPDATE user SET name = ? WHERE id = ? ";
+    public void updateUser(int userId, String newName) throws SQLException {
+        String query = "UPDATE user SET name = ? WHERE id = ? ";
         //System.out.println(query);
 
 
         Connection conn = this.connector.getConnection();
         PreparedStatement statement = conn.prepareStatement(query);
 
-        statement.setInt(2,userId);
-        statement.setString(1,newName);
+        statement.setInt(2, userId);
+        statement.setString(1, newName);
         statement.executeUpdate();
         statement.close();
         conn.close();
 
     }
-
-
 
 
     public static void main(String[] args) throws SQLException {
-       UserDao dao = new UserDao();
-        dao.createUser("NN");
-       // dao.updateUser(1,"lili");
-       //  dao.deleteUser(5);
+        //UserDao dao = new UserDao();
+        //dao.createUser("NN");
+        // dao.updateUser(1,"lili");
+        //  dao.deleteUser(5);
         //dao.updateWallet(5,"Ayoub");
+        System.out.println(new UserDao().findUserWithWallets(1));
 
-
-
-
-
-    }}
+    }
+}
