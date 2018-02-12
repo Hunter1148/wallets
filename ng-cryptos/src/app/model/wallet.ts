@@ -1,5 +1,6 @@
 import {PricingService} from "../pricing.service";
 import {isUndefined} from "util";
+import {User} from "./user";
 
 export class Line {
   constructor(public symbol: string, public quantity: number) {
@@ -8,7 +9,9 @@ export class Line {
 }
 
 export class Wallet {
+  user? :User;
   lines: Line [] = [];
+  name:String;
   pricingService: PricingService;
 
   deposit(dollars: number) {

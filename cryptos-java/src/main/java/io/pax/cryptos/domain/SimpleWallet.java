@@ -12,6 +12,8 @@ public class SimpleWallet implements Wallet {
         this.id = id;
     }
 
+    public SimpleWallet() {
+    }
 
     @Override
     public int getId() {
@@ -26,6 +28,10 @@ public class SimpleWallet implements Wallet {
     @Override
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override

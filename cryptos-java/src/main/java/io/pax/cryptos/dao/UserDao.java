@@ -57,14 +57,14 @@ public class UserDao {
             user = new FullUser(userId, userName, wallets);
             int walletId = set.getInt("w.id");
             String walletName = set.getString("w.name");
-            if(walletId>0){
-
-
-            Wallet wallet = new SimpleWallet(walletId, walletName);
-            wallets.add(wallet);
-        }}
+            if (walletId > 0) {
+                Wallet wallet = new SimpleWallet(walletId, walletName);
+                wallets.add(wallet);
+            }
+        }
         set.close();
         statement.close();
+        System.out.println(user);
         return user;
     }
 

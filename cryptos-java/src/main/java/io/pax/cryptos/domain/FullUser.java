@@ -8,9 +8,16 @@ import java.util.List;
 public class FullUser extends SimpleUser{
     List<Wallet> wallets;
 
-    public FullUser(int id, String name, List<Wallet> wallets) {
+    public FullUser(){}
+
+    public FullUser(int id, String name) {
         super(id, name);
-        this.wallets = wallets;
+    }
+
+    public FullUser(int id, String name,List<Wallet> wallets) {
+        this.id=id;
+        this.name = name;
+        this.wallets=wallets;
     }
 
     @Override
@@ -23,5 +30,10 @@ public class FullUser extends SimpleUser{
     public String toString() {
         return this.name+" : " +this.wallets;
 
+    }
+
+
+    public void setWallets(List<Wallet> wallets) {
+        this.wallets = wallets;
     }
 }

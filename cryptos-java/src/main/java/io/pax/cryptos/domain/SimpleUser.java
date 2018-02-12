@@ -9,6 +9,9 @@ public class SimpleUser implements User{
     int id;
     String name;
 
+    public SimpleUser() {
+    }
+
     public SimpleUser(int id, String name) {
         this.name = name;
         this.id = id;
@@ -28,5 +31,10 @@ public class SimpleUser implements User{
     public List<Wallet> getWallets() {
         return null;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
 }
 
