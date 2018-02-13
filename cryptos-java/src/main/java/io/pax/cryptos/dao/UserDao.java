@@ -1,13 +1,10 @@
 package io.pax.cryptos.dao;
 
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
-import com.sun.javafx.scene.control.skin.VirtualFlow;
 import io.pax.cryptos.domain.*;
+import io.pax.cryptos.domain.jdbc.FullUser;
+import io.pax.cryptos.domain.jdbc.SimpleUser;
+import io.pax.cryptos.domain.jdbc.SimpleWallet;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
