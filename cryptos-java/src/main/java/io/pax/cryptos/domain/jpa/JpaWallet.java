@@ -19,7 +19,7 @@ public class JpaWallet  implements Wallet{
 
     int id;
     String name;
-    z
+
 
     @Override
     public int getId() {
