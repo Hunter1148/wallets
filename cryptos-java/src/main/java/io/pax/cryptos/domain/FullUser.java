@@ -27,7 +27,7 @@ public class FullUser extends SimpleUser{
 
 
     @Override
-    public String toString() {
+    public String toString()   {
         return this.name+" : " +this.wallets;
 
     }
