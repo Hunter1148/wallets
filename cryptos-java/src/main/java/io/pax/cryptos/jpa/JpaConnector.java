@@ -10,11 +10,11 @@ import javax.persistence.Persistence;
  * Created by AELION on 13/02/2018.
  */
 public class JpaConnector {
-    EntityManagerFactory factory;
+    static EntityManagerFactory factory;
 
     void connect(){
-        if(this.factory==null) {
-            this.factory = Persistence.createEntityManagerFactory("cryptos");
+        if(factory==null) {
+            factory = Persistence.createEntityManagerFactory("cryptos");
 
         }
     }
